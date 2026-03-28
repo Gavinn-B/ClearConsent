@@ -10,7 +10,8 @@ body {
 }
 
 .app {
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -23,10 +24,19 @@ body {
   overflow: hidden;
   min-height: 0;
   height: calc(100vh - 64px - 72px);
+  align-items: stretch;
 }
 
 .divider {
   background: #e0e0e0;
+}
+
+.right-pane {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Centered upload panel */

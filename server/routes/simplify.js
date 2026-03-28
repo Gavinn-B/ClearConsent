@@ -6,6 +6,17 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const router = Router();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
+const LANGUAGE_NAMES = {
+  en: 'English',
+  es: 'Spanish',
+  fr: 'French',
+  de: 'German',
+  pt: 'Portuguese',
+  it: 'Italian',
+  pl: 'Polish',
+  hi: 'Hindi',
+};
+
 router.post("/simplify", upload.single('file'), async (req, res) => {
     try {
         let rawText = '';
@@ -18,13 +29,28 @@ router.post("/simplify", upload.single('file'), async (req, res) => {
             return res.status(400).json({ error: 'No file or text provided' });
         }
 
+        const language = req.body.language || 'en';
+        const languageName = LANGUAGE_NAMES[language] || 'English';
+
         const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
         const prompt = `You are helping patients understand a medical consent form.
 
-Given the following consent form text, return a JSON object with two fields:
-1. "plain": an array of strings, where each string is a paragraph rewritten in simple, plain English that anyone can understand. Wrap any medical jargon terms with double underscores like __this__.
-2. "jargon": an object where each key is a jargon term (matching what you wrapped in __) and the value is a simple one-sentence definition.
+Rewrite the following consent form in simple, plain ${languageName} that anyone can understand.
+
+Return a JSON object with exactly two fields:
+
+1. "plain": an array of section objects. Each object has:
+   - "title": a short section heading written in ${languageName}
+   - "text": the section content in simple ${languageName}. For lists use bullet lines starting with "* ".
+
+   Wrap ONLY true clinical or medical jargon terms in double underscores like __this__.
+   CRITICAL: Terms inside __ must ALWAYS be written in English, even when the rest of the text is in ${languageName}.
+   Do NOT wrap: document titles, section headings, patient names, doctor names, hospital names, dates, or common everyday words.
+
+2. "jargon": an object where each key is the English term you wrapped in __ and the value is an object with:
+   - "translation": the term translated into ${languageName} (if ${languageName} is English, same as the key)
+   - "definition": a simple one-sentence definition in ${languageName}
 
 Only return valid JSON. No markdown, no code blocks, just the raw JSON.
 
@@ -38,7 +64,6 @@ ${rawText}`;
         try {
             parsed = JSON.parse(responseText);
         } catch {
-            // Gemini sometimes wraps in markdown code blocks, strip them
             const cleaned = responseText.replace(/^```json\s*/i, '').replace(/```$/, '').trim();
             parsed = JSON.parse(cleaned);
         }
