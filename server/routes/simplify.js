@@ -11,7 +11,7 @@ const jargonGlossary = require('../data/jargonGlossary.json');
 const router = Router();
 
 // POST /simplify
-// Accepts a PDF file upload OR raw text body, returns Gemini-simplified version
+// Accepts a PDF file upload, returns Gemini-simplified version
 router.post("/simplify", upload.single('file'), async (req, res) => {
     try {
         let rawText = '';
@@ -19,9 +19,6 @@ router.post("/simplify", upload.single('file'), async (req, res) => {
         if (req.file) {
             // PDF path — uses buffer directly (no temp file to clean up)
             rawText = await extractTextFromPdf(req.file.buffer);
-        } else if (req.body.text) {
-            // Plain text path
-            rawText = req.body.text;
         } else {
             return res.status(400).json({ error: 'No file or text provided' });
         }
@@ -81,14 +78,20 @@ router.post("/quiz-data", (req, res) => {
     res.json({ quizData });
 });
 
+// POST /speak
+// Accepts a text string, outputs MP3 audio stream from ElevenLabs TTS
 router.post('/speak', async (req, res) => {
     try {
         const { text } = req.body;
         if (!text) return res.status(400).json({ error: 'No text provided' });
-  
+        
+        // call ElevenLabs TTS and stream the audio back to the client
         const audioStream = await textToSpeech(text);
-  
+        
+        // tell the client to expect an MP3
         res.setHeader('Content-Type', 'audio/mpeg');
+
+        // write each audio chunk to the response as it arrives 
         for await (const chunk of audioStream) {
             res.write(chunk);
         }
