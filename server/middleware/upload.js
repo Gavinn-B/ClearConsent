@@ -8,3 +8,5 @@ const upload = multer({
         else cb(new Error('Only PDF files are allowed'));
     }
 });
+
+export default upload;
