@@ -1,0 +1,182 @@
+{
+    "laparoscopic cholecystectomy": {
+      "simpleDefinition": "Removal of the gallbladder using a tiny camera and small cuts in your belly, instead of one large opening.",
+      "analogy": "Think of it like the surgeon using a miniature flashlight and tools on long sticks, guided by a TV screen — no need to open you up.",
+      "bodyPart": "Gallbladder",
+      "quizHint": "This procedure removes which organ?"
+    },
+    "general anesthesia": {
+      "simpleDefinition": "Medicine given through an IV that puts you into a deep, controlled sleep so you feel no pain during surgery.",
+      "analogy": "Like being put into a dreamless sleep that doctors can turn on and off safely.",
+      "bodyPart": "Whole body / brain",
+      "quizHint": "What does general anesthesia do to you during surgery?"
+    },
+    "myocardial infarction": {
+      "simpleDefinition": "A heart attack — when blood flow to part of the heart muscle is blocked, causing damage.",
+      "analogy": "Like a garden hose getting kinked — the part of the garden it feeds starts to die.",
+      "bodyPart": "Heart",
+      "quizHint": "A myocardial infarction is another name for what common emergency?"
+    },
+    "hemorrhage": {
+      "simpleDefinition": "Heavy or uncontrolled bleeding, either inside or outside the body.",
+      "analogy": "Like a pipe bursting — blood escapes from where it should stay contained.",
+      "bodyPart": "Blood vessels",
+      "quizHint": "Hemorrhage refers to what type of medical complication?"
+    },
+    "informed consent": {
+      "simpleDefinition": "Your legal agreement that you understand the procedure, its risks, and alternatives before it happens.",
+      "analogy": "Like signing a contract after reading it — not just because someone handed you a pen.",
+      "bodyPart": "N/A",
+      "quizHint": "What does giving informed consent mean you have done?"
+    },
+    "postoperative": {
+      "simpleDefinition": "The period of time after your surgery while your body is healing.",
+      "analogy": "The 'after' chapter of your surgery story.",
+      "bodyPart": "Whole body",
+      "quizHint": "Postoperative complications are problems that happen when — before or after surgery?"
+    },
+    "intravenous": {
+      "simpleDefinition": "Delivered directly into a vein, usually through a thin tube (IV line) in your arm.",
+      "analogy": "A tiny highway directly into your bloodstream.",
+      "bodyPart": "Veins / arm",
+      "quizHint": "Intravenous medication is given through what part of the body?"
+    },
+    "sutures": {
+      "simpleDefinition": "Stitches used to close a wound or surgical incision so it heals properly.",
+      "analogy": "Like sewing fabric back together, but on skin or tissue.",
+      "bodyPart": "Skin / tissue",
+      "quizHint": "Sutures are used to do what to a wound?"
+    },
+    "biopsy": {
+      "simpleDefinition": "Removing a small sample of tissue from your body so it can be examined under a microscope.",
+      "analogy": "Like taking a tiny soil sample to test before deciding what to plant.",
+      "bodyPart": "Varies",
+      "quizHint": "Why is a biopsy performed on body tissue?"
+    },
+    "pulmonary embolism": {
+      "simpleDefinition": "A blood clot that travels to your lungs and blocks blood flow there, which can be life-threatening.",
+      "analogy": "Like a traffic jam that forms somewhere else but ends up blocking a critical highway — the ones supplying your lungs.",
+      "bodyPart": "Lungs",
+      "quizHint": "A pulmonary embolism is a clot that travels to which organ?"
+    },
+    "sedation": {
+      "simpleDefinition": "Medicine that makes you feel calm, drowsy, or partially asleep during a procedure — lighter than full anesthesia.",
+      "analogy": "Like the feeling of drifting off on a very relaxing afternoon nap, but controlled by your doctor.",
+      "bodyPart": "Brain / whole body",
+      "quizHint": "Sedation is used to make you feel what during a procedure?"
+    },
+    "intubation": {
+      "simpleDefinition": "Placing a breathing tube down your throat so a machine can breathe for you while you are under general anesthesia.",
+      "analogy": "Like a snorkel that connects your airway to a machine that breathes on your behalf.",
+      "bodyPart": "Throat / airway",
+      "quizHint": "Why is an intubation tube placed during some surgeries?"
+    },
+    "incision": {
+      "simpleDefinition": "A cut made by the surgeon to access the area being operated on.",
+      "analogy": "Like opening a zipper to get inside — controlled, precise, and closed back up afterward.",
+      "bodyPart": "Skin / tissue",
+      "quizHint": "What is a surgical incision?"
+    },
+    "catheter": {
+      "simpleDefinition": "A thin, flexible tube inserted into your body to drain fluids — most commonly urine from your bladder during surgery.",
+      "analogy": "Like a small drain pipe placed temporarily to keep things clear while you can't move around.",
+      "bodyPart": "Bladder / veins",
+      "quizHint": "What does a catheter do inside the body?"
+    },
+    "thrombosis": {
+      "simpleDefinition": "A blood clot that forms inside a blood vessel and blocks blood from flowing through it normally.",
+      "analogy": "Like a blockage forming in a pipe that stops water from getting through.",
+      "bodyPart": "Blood vessels",
+      "quizHint": "Thrombosis refers to the formation of what inside a blood vessel?"
+    },
+    "edema": {
+      "simpleDefinition": "Swelling caused by fluid building up in your body's tissues, often in the legs or around the surgical area.",
+      "analogy": "Like a sponge that has absorbed too much water and puffed up.",
+      "bodyPart": "Tissue / skin",
+      "quizHint": "What causes the swelling known as edema?"
+    },
+    "abscess": {
+      "simpleDefinition": "A pocket of pus that forms in your body as a result of an infection — it may need to be drained.",
+      "analogy": "Like a bubble of infection your body tries to wall off to stop it from spreading.",
+      "bodyPart": "Varies",
+      "quizHint": "An abscess is a pocket of what inside the body?"
+    },
+    "hypertension": {
+      "simpleDefinition": "High blood pressure — when the force of blood pushing through your arteries is consistently too high.",
+      "analogy": "Like water flowing through a hose at dangerously high pressure, straining the walls.",
+      "bodyPart": "Heart / arteries",
+      "quizHint": "Hypertension is the medical term for what common condition?"
+    },
+    "anesthesiologist": {
+      "simpleDefinition": "The doctor who gives you anesthesia and monitors your breathing, heart rate, and safety throughout the entire surgery.",
+      "analogy": "Like the co-pilot of the operating room — focused entirely on keeping you safe and unconscious at the right level.",
+      "bodyPart": "N/A",
+      "quizHint": "What is the main job of an anesthesiologist during surgery?"
+    },
+    "complication": {
+      "simpleDefinition": "An unexpected problem that arises during or after surgery, beyond the normal expected outcome.",
+      "analogy": "Like a detour that appears on a road trip — not planned for, but something the medical team is trained to handle.",
+      "bodyPart": "Varies",
+      "quizHint": "What does it mean when a surgical complication occurs?"
+    },
+    "prognosis": {
+      "simpleDefinition": "Your doctor's best prediction of how your condition will develop and what your recovery will likely look like.",
+      "analogy": "Like a weather forecast for your health — based on evidence, not a guarantee.",
+      "bodyPart": "N/A",
+      "quizHint": "What does a prognosis tell you about your condition?"
+    },
+    "pathology": {
+      "simpleDefinition": "The study of disease — in surgery, this usually means sending removed tissue to a lab to be examined for signs of illness.",
+      "analogy": "Like sending a soil sample to a lab to find out exactly what's in it.",
+      "bodyPart": "Varies",
+      "quizHint": "Why is tissue sent to pathology after some surgeries?"
+    },
+    "sterile field": {
+      "simpleDefinition": "The completely germ-free area maintained around the surgical site to prevent infection during the operation.",
+      "analogy": "Like a clean room in a lab — everything inside it has been decontaminated and nothing unclean is allowed in.",
+      "bodyPart": "Surgical area",
+      "quizHint": "Why is a sterile field maintained during surgery?"
+    },
+    "consent form": {
+      "simpleDefinition": "A legal document you sign to confirm you understand the procedure, its risks, benefits, and alternatives before agreeing to it.",
+      "analogy": "Like signing a contract after reading it — your signature means you understood and agreed.",
+      "bodyPart": "N/A",
+      "quizHint": "What does signing a consent form confirm?"
+    },
+    "local anesthesia": {
+      "simpleDefinition": "Medicine injected to numb just one small area of your body so you feel no pain there, while staying fully awake.",
+      "analogy": "Like turning off the pain signal in one small room of a building while the rest stays fully lit.",
+      "bodyPart": "Localized area",
+      "quizHint": "How is local anesthesia different from general anesthesia?"
+    },
+    "vital signs": {
+      "simpleDefinition": "Key measurements that show how your body is functioning — heart rate, blood pressure, breathing rate, and temperature.",
+      "analogy": "Like the dashboard gauges in a car that tell you if everything is running normally.",
+      "bodyPart": "Whole body",
+      "quizHint": "Which of the following is one of the four main vital signs?"
+    },
+    "inflammation": {
+      "simpleDefinition": "Your body's natural response to injury or infection — the area becomes red, warm, swollen, and painful as your immune system responds.",
+      "analogy": "Like your body sounding an alarm and sending repair crews to the site of damage.",
+      "bodyPart": "Varies",
+      "quizHint": "What are the signs that inflammation is occurring in body tissue?"
+    },
+    "drainage": {
+      "simpleDefinition": "The removal of fluid, pus, or blood from a wound or body cavity, either naturally or through a tube placed by a doctor.",
+      "analogy": "Like unclogging a backed-up sink so fluid can flow out instead of pooling.",
+      "bodyPart": "Wound / surgical site",
+      "quizHint": "What is the purpose of surgical drainage?"
+    },
+    "NPO": {
+      "simpleDefinition": "Nothing by mouth — you are not allowed to eat or drink anything before your surgery, usually starting the night before.",
+      "analogy": "Like an empty stomach rule before a big physical event — required for your safety under anesthesia.",
+      "bodyPart": "Stomach / digestive system",
+      "quizHint": "What does NPO mean you must do before surgery?"
+    },
+    "discharge": {
+      "simpleDefinition": "When your medical team officially releases you from the hospital or clinic to go home after your procedure.",
+      "analogy": "Like being checked out of a hotel — you've been cleared to leave and continue recovery at home.",
+      "bodyPart": "N/A",
+      "quizHint": "What does it mean when a patient is discharged from the hospital?"
+    }
+  }
