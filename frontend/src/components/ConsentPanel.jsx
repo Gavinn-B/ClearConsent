@@ -2,9 +2,17 @@ import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import './ConsentPanel.css'
 
+const LISTEN_ICONS = {
+  idle:     '🔊',
+  loading:  '…',
+  speaking: '⏸',
+  paused:   '▶',
+}
+
 function Popup({ term, definition, anchorEl, onClose, onSpeakWord }) {
   const popupRef = useRef(null)
-  const [speaking, setSpeaking] = useState(false)
+  const popupAudioRef = useRef(null)
+  const [listenState, setListenState] = useState('idle')
 
   const pos = (() => {
     if (!anchorEl) return { top: 0, left: 0 }
@@ -18,6 +26,14 @@ function Popup({ term, definition, anchorEl, onClose, onSpeakWord }) {
     return { top, left }
   })()
 
+  // Stop popup audio when dismissed
+  useEffect(() => {
+    return () => {
+      popupAudioRef.current?.pause()
+    }
+  }, [])
+
+  // Close on outside click
   useEffect(() => {
     const handleClick = (e) => {
       if (popupRef.current && !popupRef.current.contains(e.target)) {
@@ -33,18 +49,38 @@ function Popup({ term, definition, anchorEl, onClose, onSpeakWord }) {
   const definitionText = isObject ? definition.definition : definition
 
   const handleListen = async () => {
-    if (speaking) return
-    setSpeaking(true)
-    await onSpeakWord(term, definition)
-    setSpeaking(false)
+    if (listenState === 'speaking') {
+      popupAudioRef.current?.pause()
+      setListenState('paused')
+      return
+    }
+    if (listenState === 'paused') {
+      popupAudioRef.current?.play()
+      setListenState('speaking')
+      return
+    }
+    if (listenState === 'loading') return
+
+    setListenState('loading')
+    const audio = await onSpeakWord(term, definition)
+    if (!audio) { setListenState('idle'); return }
+
+    popupAudioRef.current = audio
+    audio.onended = () => setListenState('idle')
+    audio.play()
+    setListenState('speaking')
   }
 
   return createPortal(
     <div ref={popupRef} className="popup" style={{ top: pos.top, left: pos.left }}>
       <div className="popup-header">
         <span className="popup-term">{term}</span>
-        <button className={`popup-listen-btn ${speaking ? 'popup-listen-btn-active' : ''}`} onClick={handleListen} title="Listen">
-          {speaking ? '…' : '🔊'}
+        <button
+          className={`popup-listen-btn ${listenState !== 'idle' ? 'popup-listen-btn-active' : ''}`}
+          onClick={handleListen}
+          title="Listen"
+        >
+          {LISTEN_ICONS[listenState]}
         </button>
       </div>
       {translatedTerm && translatedTerm.toLowerCase() !== term.toLowerCase() && (
@@ -110,12 +146,18 @@ function renderText(text, jargonData, onHighlightClick, activePopup, sectionInde
   )
 }
 
-export default function ConsentPanel({ title, paragraphs, jargonData, isPlain, loading, onPopupOpen, onSpeakWord }) {
+export default function ConsentPanel({ title, paragraphs, jargonData, isPlain, loading, onPopupOpen, onPopupClose, onSpeakWord }) {
   const [activePopup, setActivePopup] = useState(null)
 
   const handleHighlightClick = (popup) => {
     if (popup && onPopupOpen) onPopupOpen()
+    if (!popup && onPopupClose) onPopupClose()
     setActivePopup(popup)
+  }
+
+  const handlePopupClose = () => {
+    if (onPopupClose) onPopupClose()
+    setActivePopup(null)
   }
 
   return (
@@ -145,7 +187,7 @@ export default function ConsentPanel({ title, paragraphs, jargonData, isPlain, l
           term={activePopup.term}
           definition={activePopup.definition}
           anchorEl={activePopup.el}
-          onClose={() => setActivePopup(null)}
+          onClose={handlePopupClose}
           onSpeakWord={onSpeakWord}
         />
       )}

@@ -96,13 +96,27 @@ export default function App() {
     setQuizOpen(false)
   }
 
+  const mainWasPlayingRef = useRef(false)
+
   const handlePauseForPopup = () => {
     if (speechState === 'speaking') {
       audioRef.current?.pause()
       setSpeechState('paused')
+      mainWasPlayingRef.current = true
+    } else {
+      mainWasPlayingRef.current = false
     }
   }
 
+  const handlePopupClose = () => {
+    if (mainWasPlayingRef.current && audioRef.current) {
+      audioRef.current.play()
+      setSpeechState('speaking')
+    }
+    mainWasPlayingRef.current = false
+  }
+
+  // Returns the Audio object so the Popup can control pause/resume itself
   const handleSpeakWord = async (term, definition) => {
     const defText = typeof definition === 'object' ? definition.definition : definition
     const text = `${term}. ${defText}`
@@ -116,9 +130,10 @@ export default function App() {
       const url = URL.createObjectURL(blob)
       const audio = new Audio(url)
       audio.onended = () => URL.revokeObjectURL(url)
-      audio.play()
+      return audio
     } catch (err) {
       console.error('Word TTS failed:', err)
+      return null
     }
   }
 
@@ -235,6 +250,7 @@ export default function App() {
               isPlain={true}
               loading={loading}
               onPopupOpen={handlePauseForPopup}
+              onPopupClose={handlePopupClose}
               onSpeakWord={handleSpeakWord}
             />
           </div>
