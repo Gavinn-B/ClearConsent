@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import * as pdfjsLib from 'pdfjs-dist'
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).href
 
@@ -6,8 +6,16 @@ import TopBar from './components/TopBar'
 import ConsentPanel from './components/ConsentPanel'
 import BottomBar from './components/BottomBar'
 import QuizModal from './components/QuizModal'
-import jargonMap from './jargonMap'
 import './App.css'
+
+async function callServer(rawText, language) {
+  const res = await fetch('http://localhost:3000/api/simplify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: rawText, language }),
+  })
+  return res.json()
+}
 
 export default function App() {
   const [language, setLanguage] = useState('en')
@@ -16,12 +24,34 @@ export default function App() {
   const [progress, setProgress] = useState(30)
   const [pdfUrl, setPdfUrl] = useState(null)
   const [fileName, setFileName] = useState(null)
+  const [rawText, setRawText] = useState(null)
   const [aiContent, setAiContent] = useState(null)
   const [loading, setLoading] = useState(false)
   const [statusMsg, setStatusMsg] = useState(null)
+  const prevLanguage = useRef('en')
 
   const plainText = aiContent?.plain || null
-  const currentJargon = aiContent?.jargon || jargonMap[language] || jargonMap['en']
+  const currentJargon = aiContent?.jargon || null
+
+  // Re-translate when language changes, but only if a PDF has been processed
+  useEffect(() => {
+    if (!rawText || language === prevLanguage.current) return
+    prevLanguage.current = language
+
+    setLoading(true)
+    setStatusMsg('Translating...')
+    callServer(rawText, language)
+      .then(data => {
+        if (data.plain) {
+          setAiContent(data)
+          setStatusMsg(null)
+        } else {
+          setStatusMsg(`Error: ${data.error || 'Unknown error'}`)
+        }
+      })
+      .catch(err => setStatusMsg(`Error: ${err.message}`))
+      .finally(() => setLoading(false))
+  }, [language, rawText])
 
   const handleFileUpload = async (file) => {
     setLoading(true)
@@ -31,20 +61,17 @@ export default function App() {
     try {
       const arrayBuffer = await file.arrayBuffer()
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise
-      let rawText = ''
+      let text = ''
       for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i)
         const content = await page.getTextContent()
-        rawText += content.items.map(item => item.str).join(' ') + '\n'
+        text += content.items.map(item => item.str).join(' ') + '\n'
       }
 
+      setRawText(text)
       setStatusMsg('Sending to server...')
-      const res = await fetch('http://localhost:3000/api/simplify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: rawText }),
-      })
-      const data = await res.json()
+      const data = await callServer(text, language)
+
       if (data.plain) {
         setAiContent(data)
         setStatusMsg(null)
@@ -69,7 +96,10 @@ export default function App() {
 
   const handleSpeak = () => {
     if (!plainText) return
-    const text = plainText.join(' ').replace(/__([^_]+)__/g, '$1')
+    const text = plainText
+      .map(s => typeof s === 'object' ? s.text : s)
+      .join(' ')
+      .replace(/__([^_]+)__/g, '$1')
     if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(text)
       utterance.rate = 0.9
@@ -127,12 +157,15 @@ export default function App() {
         <div className="divider" />
 
         {plainText ? (
-          <ConsentPanel
-            title="Plain English"
-            paragraphs={plainText}
-            jargonData={currentJargon}
-            isPlain={true}
-          />
+          <div className="right-pane">
+            <ConsentPanel
+              title="Plain Language Summary"
+              paragraphs={plainText}
+              jargonData={currentJargon}
+              isPlain={true}
+              loading={loading}
+            />
+          </div>
         ) : (
           <div className="upload-panel">
             <div className="upload-zone muted">
