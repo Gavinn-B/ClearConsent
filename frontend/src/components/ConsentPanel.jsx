@@ -1,9 +1,10 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import './ConsentPanel.css'
 
-function Popup({ term, definition, anchorEl, onClose }) {
+function Popup({ term, definition, anchorEl, onClose, onSpeakWord }) {
   const popupRef = useRef(null)
+  const [speaking, setSpeaking] = useState(false)
 
   const pos = (() => {
     if (!anchorEl) return { top: 0, left: 0 }
@@ -31,9 +32,21 @@ function Popup({ term, definition, anchorEl, onClose }) {
   const translatedTerm = isObject ? definition.translation : null
   const definitionText = isObject ? definition.definition : definition
 
+  const handleListen = async () => {
+    if (speaking) return
+    setSpeaking(true)
+    await onSpeakWord(term, definition)
+    setSpeaking(false)
+  }
+
   return createPortal(
     <div ref={popupRef} className="popup" style={{ top: pos.top, left: pos.left }}>
-      <span className="popup-term">{term}</span>
+      <div className="popup-header">
+        <span className="popup-term">{term}</span>
+        <button className={`popup-listen-btn ${speaking ? 'popup-listen-btn-active' : ''}`} onClick={handleListen} title="Listen">
+          {speaking ? '…' : '🔊'}
+        </button>
+      </div>
       {translatedTerm && translatedTerm.toLowerCase() !== term.toLowerCase() && (
         <span className="popup-translation">{translatedTerm}</span>
       )}
@@ -97,8 +110,13 @@ function renderText(text, jargonData, onHighlightClick, activePopup, sectionInde
   )
 }
 
-export default function ConsentPanel({ title, paragraphs, jargonData, isPlain, loading }) {
+export default function ConsentPanel({ title, paragraphs, jargonData, isPlain, loading, onPopupOpen, onSpeakWord }) {
   const [activePopup, setActivePopup] = useState(null)
+
+  const handleHighlightClick = (popup) => {
+    if (popup && onPopupOpen) onPopupOpen()
+    setActivePopup(popup)
+  }
 
   return (
     <div className={`panel ${isPlain ? 'panel-plain' : ''}`}>
@@ -110,13 +128,13 @@ export default function ConsentPanel({ title, paragraphs, jargonData, isPlain, l
             return (
               <div key={i} className="panel-section">
                 <h3 className="section-title">{section.title}</h3>
-                {renderText(section.text || '', jargonData, setActivePopup, activePopup, i)}
+                {renderText(section.text || '', jargonData, handleHighlightClick, activePopup, i)}
               </div>
             )
           }
           return (
             <div key={i}>
-              {renderText(typeof section === 'string' ? section : '', jargonData, setActivePopup, activePopup, i)}
+              {renderText(typeof section === 'string' ? section : '', jargonData, handleHighlightClick, activePopup, i)}
             </div>
           )
         })}
@@ -128,6 +146,7 @@ export default function ConsentPanel({ title, paragraphs, jargonData, isPlain, l
           definition={activePopup.definition}
           anchorEl={activePopup.el}
           onClose={() => setActivePopup(null)}
+          onSpeakWord={onSpeakWord}
         />
       )}
     </div>

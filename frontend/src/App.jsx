@@ -96,6 +96,32 @@ export default function App() {
     setQuizOpen(false)
   }
 
+  const handlePauseForPopup = () => {
+    if (speechState === 'speaking') {
+      audioRef.current?.pause()
+      setSpeechState('paused')
+    }
+  }
+
+  const handleSpeakWord = async (term, definition) => {
+    const defText = typeof definition === 'object' ? definition.definition : definition
+    const text = `${term}. ${defText}`
+    try {
+      const res = await fetch('http://localhost:3000/api/speak', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      })
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const audio = new Audio(url)
+      audio.onended = () => URL.revokeObjectURL(url)
+      audio.play()
+    } catch (err) {
+      console.error('Word TTS failed:', err)
+    }
+  }
+
   const handleSpeak = async () => {
     if (speechState === 'speaking') {
       audioRef.current?.pause()
@@ -208,6 +234,8 @@ export default function App() {
               jargonData={currentJargon}
               isPlain={true}
               loading={loading}
+              onPopupOpen={handlePauseForPopup}
+              onSpeakWord={handleSpeakWord}
             />
           </div>
         ) : (
