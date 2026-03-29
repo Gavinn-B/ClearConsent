@@ -164,7 +164,7 @@ Changing the language selector automatically re-translates the simplified conten
 ---
 
 ## Usage
-
+(Optional: Assets folder has a demo document to help test try App)
 1. Open the app in your browser
 2. Click **Choose PDF** and upload a medical consent form
 3. The simplified plain-language version appears on the right
