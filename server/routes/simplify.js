@@ -44,6 +44,12 @@ Return a JSON object with exactly three fields:
    - "title": a short section heading written in ${languageName}
    - "text": the section content in simple ${languageName}. For lists use bullet lines starting with "* ".
 
+   IMPORTANT — Patient information fields (name, date of birth, MRN, doctor, etc.):
+   - Always place these in a single section titled "Patient Information" as the FIRST section.
+   - Format each field as a bullet line: "* Label: Value" (e.g. "* Patient Name: Rafael A. Martinez").
+   - Preserve the original order of the fields exactly as they appear in the document.
+   - Do NOT reword, reorder, or combine these fields.
+
    Wrap ONLY true clinical or medical jargon terms in double underscores like __this__.
    CRITICAL: Terms inside __ must ALWAYS be written in English, even when the rest of the text is in ${languageName}.
    Do NOT wrap: document titles, section headings, patient names, doctor names, hospital names, dates, or common everyday words.
